@@ -30,6 +30,22 @@ async function findAvailablePort(startPort: number = 3000): Promise<number> {
 async function startServer() {
   const app = express();
   const server = createServer(app);
+  
+  // ✅ DEV LOGIN – حل فوري مؤقت
+import { COOKIE_NAME } from "../shared/const";
+
+app.get("/api/dev-login", (req, res) => {
+  res.cookie(COOKIE_NAME, "dev-session", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+    path: "/",
+    maxAge: 1000 * 60 * 60 * 24, // 24 ساعة
+  });
+
+  res.json({ success: true });
+});
+
   // Configure body parser with larger size limit for file uploads
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
