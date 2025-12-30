@@ -8,6 +8,14 @@ import App from "./App";
 import { getLoginUrl } from "./const";
 import "./index.css";
 
+// Load Umami analytics safely (won't break if env is missing)
+if (import.meta.env.VITE_ANALYTICS_ENDPOINT) {
+  const script = document.createElement("script");
+  script.src = `${import.meta.env.VITE_ANALYTICS_ENDPOINT}/umami`;
+  script.async = true;
+  document.head.appendChild(script);
+}
+
 const queryClient = new QueryClient();
 
 const redirectToLoginIfUnauthorized = (error: unknown) => {
